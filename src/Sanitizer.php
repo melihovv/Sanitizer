@@ -140,15 +140,18 @@ class Sanitizer
 
             // If exists, getting parameters
             $parametersSet = array();
-            if (str_contains($rule, ':')) {
+            $isCallable = is_callable($rule);
+            if (!$isCallable && str_contains($rule, ':')) {
                 list($rule, $parameters) = explode(':', $rule);
                 $parametersSet = explode(',', $parameters);
             }
             array_unshift($parametersSet, $value);
 
             // Get the sanitizer.
-            if (!$sanitizer = $this->getSanitizer($rule)) {
+            if (!$isCallable && !$sanitizer = $this->getSanitizer($rule)) {
                 continue;
+            } elseif ($isCallable) {
+                $sanitizer = $rule;
             }
 
             // Execute the sanitizer to mutate the value.

@@ -18,7 +18,7 @@ First construct a rules array.
         'email'     => 'trim|strtolower'
     ];
 
-Rules can contain either callable functions, or the name of a sanitizer binding (more later). You can use either a pipe `|` or an array to specify multiple sanitization rules.
+Rules can contain either callable functions, closures, or the name of a sanitizer binding (more later). You can use either a pipe `|` or an array to specify multiple sanitization rules.
 
 The sanitizer can be executed in the following fashion.
 
@@ -29,7 +29,12 @@ Here's a full example.
 
     // Construct rules array.
     $rules = [
-        'name'      => 'trim',
+        'name'      => [
+            'trim',
+            function ($value) {
+                return strtoupper($value);
+            }
+        ],
         'email'     => 'trim|strtolower'
     ];
 
@@ -48,19 +53,19 @@ Here's a full example.
 Here's the content of `$data` after execution.
 
     [
-        'name' => 'Dayle',
+        'name' => 'DAYLE',
         'email' => 'me@daylerees.com'
     ]
 
 Using the Laravel facade, the syntax can be made a little cleaner.
 
     Sanitizer::sanitize($rules, $data);
-    
-Sanitize a single value like so. 
+
+Sanitize a single value like so.
 
     $rules = 'trim|strtolower';
     $data = '  Dayle';
-    
+
     Sanitizer::sanitizeValue($rules, $data);
 
 Here is the value returned.

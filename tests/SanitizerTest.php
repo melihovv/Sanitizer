@@ -63,6 +63,20 @@ class SanitizerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Dayle Rees', $d['name']);
     }
 
+    public function testThatSanitizerCanSanitizeWithRealClosure()
+    {
+        $s = new Sanitizer;
+        $d = ['name' => 'Dayle'];
+        $s->sanitize([
+            'name' => [
+                function ($value) {
+                    return mb_strtolower($value);
+                },
+            ],
+        ], $d);
+        $this->assertEquals('dayle', $d['name']);
+    }
+
     public function testThatACallableRuleCanBeUsed()
     {
         $s = new Sanitizer;
