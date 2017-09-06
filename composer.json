@@ -25,11 +25,11 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Rees\Sanitizer\SanitizerServiceProvider"
+                "Rees\\Sanitizer\\SanitizerServiceProvider"
             ],
-            "aliases": [
-                "Sanitizer": "Rees\Sanitizer\Facade"
-            ]
+            "aliases": {
+                "Sanitizer": "Rees\\Sanitizer\\Facade"
+            }
         }
     },
 }
